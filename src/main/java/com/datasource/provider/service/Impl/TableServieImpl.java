@@ -50,10 +50,42 @@ public class TableServieImpl  implements TableServie {
     @Override
     public List<Map<String,Object>> getJDBCListInfo(String name) {
         List<Map<String,Object>> list = new ArrayList<>(16);
+        StringBuffer stringBuffer =new StringBuffer(16);
         Map<String, Object> map = Collections.synchronizedMap(new HashMap<>());
         //获取表所有记录
-        List<Map<String,Object>> tableData=tableDao.queryTableData(name);
+        List<Map<String,Object>> insertList=tableDao.queryTableData(name);
         //将查询出来的数据变成DML语句
+        for (Map<String,Object> jsonMap:insertList) {
+
+            stringBuffer.append(" insert into ");
+            stringBuffer.append(name);
+            stringBuffer.append("(");
+            for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
+                String field = entry.getKey();
+                stringBuffer.append(field).append(",");
+            }
+            stringBuffer.delete(stringBuffer.length()-1,stringBuffer.length());
+            stringBuffer.append(")");
+            stringBuffer.append(" VALUES ").append("(");
+            for (Map.Entry<String, Object> entry : jsonMap.entrySet()) {
+                Object value = entry.getValue();
+                if (null!=value){
+                    stringBuffer.append("'").append(value).append("'").append(",");
+                }else {
+                    stringBuffer.append(value).append(",");
+//                    stringBuffer.append(" '' ").append(",");
+                }
+            }
+            stringBuffer.delete(stringBuffer.length()-1,stringBuffer.length());
+            stringBuffer.append(") ");
+            stringBuffer.append("<>");
+        }
+        stringBuffer.delete(stringBuffer.length()-2,stringBuffer.length());
+        String sql = stringBuffer.toString();
+        String[] split = sql.split("<>");
+        //转换为insert 语句
+        List<String> tableData = Arrays.asList(split);
+
         map.put("tableData",tableData);
 
         ///

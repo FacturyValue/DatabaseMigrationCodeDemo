@@ -76,7 +76,7 @@ public class TableDaoImpl implements TableDao {
         PreparedStatement ps=null;
         ResultSet rs=null;
         try {
-            String sql="select * from "+tableName+" limit 5000";
+            String sql="select * from "+tableName+" limit 0,5000";
             ps = connection.prepareStatement(sql);//预处理
             rs = ps.executeQuery();
             //new 一个空的list集合用来存放查询结果
@@ -99,6 +99,8 @@ public class TableDaoImpl implements TableDao {
                         case Types.DATE : ob=rs.getDate(i+1);
                         break;
                         case Types.BOOLEAN:ob=rs.getBoolean(i+1);
+                        break;
+                        case Types.TINYINT:ob=rs.getBoolean(i+1);
                         break;
                         case Types.DECIMAL:ob=rs.getLong(i+1);
                         break;

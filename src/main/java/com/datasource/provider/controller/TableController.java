@@ -67,7 +67,7 @@ public class TableController {
     public ServiceResult transInsert(@PathVariable("name") String name){
 //        List<Map<String, Object>> maps = tableMapperServie.findByTableName(name);
        List<Map<String, Object>> maps = tableServie.queryTableData(name);
-        tableServie.insertTableData(name,maps);
+//        tableServie.insertTableData(name,maps);
         return ServiceResult.success(maps);
     }
 }

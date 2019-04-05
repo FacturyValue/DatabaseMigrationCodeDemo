@@ -55,8 +55,8 @@ public class TableMapperServieImpl implements TableMapperServie {
                 if (null!=value){
                     stringBuffer.append("'").append(value).append("'").append(",");
                 }else {
-                    //stringBuffer.append(value).append(",");
-                    stringBuffer.append(" '' ").append(",");
+                    stringBuffer.append(value).append(",");
+//                    stringBuffer.append(" '' ").append(",");
                 }
             }
             stringBuffer.delete(stringBuffer.length()-1,stringBuffer.length());
